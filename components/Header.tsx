@@ -17,7 +17,7 @@ export default function Header() {
                 height={30}
                 />
             </a>
-            {/* TODO :  Input 추가 */}
+            {/* TODO :  Input 상세히 추가 */}
             <Input type='text' placeholder='검색어를 입력해주세요.' />
         </header>
     )
