@@ -4,20 +4,23 @@ import {
     DialogContent,
     DialogTrigger,
   } from "@/components/ui/dialog"
+import AudioPlayer from './AudioPlayer'
 
 interface MusicCardProps {
     title : string,
     artist : string | string[],
-    img : string
+    imgUrl : string
+    musicUrl : string | null
 }
 
-export default function MusicCard({title, artist, img} : MusicCardProps) {
+export default function MusicCard({title, artist, imgUrl, musicUrl} : MusicCardProps) {
     return (
         <Dialog>
             <DialogTrigger className='flex flex-col items-center cursor-pointer'>
+                {/* TODO : Image 크기 다 맞추기 (정사각형으로) (반례 : beenzino 검색해봐) */}
                 <Image 
                 width={320} height={320} 
-                src={img} alt='music_img' 
+                src={imgUrl} alt='music_img' 
                 placeholder='blur' 
                 blurDataURL='data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkkAQAAB8AG7jymN8AAAAASUVORK5CYII='
                 />
@@ -27,10 +30,11 @@ export default function MusicCard({title, artist, img} : MusicCardProps) {
             <DialogContent>
                 <Image 
                 width={640} height={640} 
-                src={img} alt='music_img' 
+                src={imgUrl} alt='music_img' 
                 placeholder='blur' 
                 blurDataURL='data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkkAQAAB8AG7jymN8AAAAASUVORK5CYII='
                 />
+                <AudioPlayer musicUrl={musicUrl} />
             </DialogContent>
         </Dialog>
     )

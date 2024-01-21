@@ -25,7 +25,8 @@ export default async function Page({searchParams} : searchParamsType) {
                     key={`music_card_${id}`} 
                     title={item.name} 
                     artist={item.album.artists[0].name} 
-                    img={item.album.images[0].url} 
+                    imgUrl={item.album.images[0].url} 
+                    musicUrl={item.preview_url}
                     />
                     ))}
             </main>
