@@ -43,7 +43,7 @@ export default function HeaderForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder='검색어를 입력해주세요.' {...field} />
+                <Input placeholder='검색어를 입력해주세요.' autoComplete="off" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

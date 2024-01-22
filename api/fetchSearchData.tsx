@@ -1,13 +1,12 @@
-// TODO : API , HOOK 정리하기
 // TODO : 에러 처리 고민해보기
-// TODO : 캐시 되는지 안되는지 확인
 
 import { getAccessToken } from "./getAceessToken"
 
-export const fetchSearchData = async (q:string, type:'artist'|'album'|'track') => {
+export const fetchSearchData = async (q:string, type:'artist'|'album'|'track', url?:string) => {
   try {
     let accessToken = await getAccessToken();
-    const response = await fetch(`https://api.spotify.com/v1/search/?q=${q}&type=${type}`, {
+    const API_URL = `https://api.spotify.com/v1/search/?q=${q}&type=${type}`
+    const response = await fetch(url ? url : API_URL, {
         headers: {
             'Authorization': `Bearer ${accessToken.access_token}`
         },

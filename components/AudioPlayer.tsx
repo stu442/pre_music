@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useToast } from './ui/use-toast';
 
 interface AudioPlayerProps {
@@ -8,16 +9,20 @@ interface AudioPlayerProps {
 }
 
 export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
+    const [volume, setVolume] = useState(0.4);
+    const [isVisible, setIsVisible] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
+    const timerId = useRef<NodeJS.Timeout | null>(null);
     const { toast } = useToast()
 
     useEffect(() => {
         if(audioRef.current) {
-            audioRef.current.volume = 0.4
+            audioRef.current.volume = volume
         }
-    }, [])
+    }, [volume])
 
     const playPauseToggle = () => {
+
       if (musicUrl === null) {
         toast({
           title: 'Error',
@@ -25,19 +30,28 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
           variant: 'destructive',
         })
       }
-      if (audioRef.current?.paused) {
-        audioRef.current.play();
-      } else {
-        audioRef.current?.pause();
+      console.log(timerId.current)
+      if(timerId.current) {
+        clearTimeout(timerId.current);
       }
+      
+      setIsVisible(true);
+      timerId.current = setTimeout(() => {
+        setIsVisible(false);
+      }, 1000);
+
+      setVolume((prevVolume) => (prevVolume === 0 ? 0.4 : 0));
     };
     
     return (
         <>
-        {/* TODO: button style 입히기 */}
-            <button onClick={playPauseToggle}>
-                {audioRef.current && audioRef.current.paused ? 'Play' : 'Pause'}
-            </button>
+              <button className='flex justify-center items-center w-full h-full fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' onClick={playPauseToggle}>
+                {volume === 0 ? (
+                  isVisible && <Image className='bg-white/10 p-2 rounded-full transition duration-500 ease-linear' src="/icons/speaker_off.svg" alt="음소거" width={120} height={120} />
+                ) : (
+                  isVisible && <Image className='bg-white/10 p-2 rounded-full' src="/icons/speaker_on.svg" alt="음량 켜짐" width={120} height={120} />
+                )}
+              </button>
             {musicUrl && <audio
             ref={audioRef} 
             className='hidden' 

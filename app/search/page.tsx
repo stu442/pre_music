@@ -1,5 +1,3 @@
-// TODO : searchParams.keyword 가 null 일 경우 처리
-
 import { fetchSearchData } from "@/api/fetchSearchData"
 import MusicCard from "@/components/MusicCard"
 import Spinner from "@/components/Spinner";
