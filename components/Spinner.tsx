@@ -5,9 +5,9 @@ export default function Spinner() {
         <Image
         src="icons/spinner.svg"
         alt="loading_spinner"
-        className='animate-spin'
-        width={30}
-        height={30}
+        className='animate-spin fixed inset-x-0 mx-auto'
+        width={200}
+        height={200}
         />
     )
 }

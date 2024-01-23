@@ -9,7 +9,6 @@ export default async function Page({searchParams} : {searchParams : {keyword:str
     return (
         <>
         <h2 className="text-lg mt-8">&apos;{searchParams.keyword}&apos;에 관한 음악</h2>
-        {/* TODO : Spinner 적어도 가운데 정렬 해놓기.. */}
         <Suspense fallback={<Spinner />}>
             <main className="grid grid-cols-4 gap-3 mt-4">
                 {searchData.tracks?.items.length === 0 ? "검색결과가 없습니다." : null}
