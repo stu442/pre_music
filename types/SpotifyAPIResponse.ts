@@ -28,4 +28,3 @@ interface SpotifyArtist {
       total: number;
     };
   }
-  

@@ -30,7 +30,6 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
           variant: 'destructive',
         })
       }
-      console.log(timerId.current)
       if(timerId.current) {
         clearTimeout(timerId.current);
       }
