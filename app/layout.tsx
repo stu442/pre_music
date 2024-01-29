@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import { Toaster } from '@/components/ui/toaster'
+import LoginBtn from '@/components/LoginBtn'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={`${inter.className}`}>
         <div className='mx-60 mt-20'>
+          <LoginBtn />
           <Header />
           {children}
         </div>
