@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${inter.className}`}>
-        <div className='mx-60 mt-20'>
+        <div className='mx-60 mt-10'>
           <LoginBtn />
           <Header />
           {children}

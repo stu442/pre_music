@@ -14,7 +14,7 @@ interface MusicCardProps {
     musicUrl : string | null
 }
 
-export default async function MusicCard({title, artist, imgUrl, musicUrl} : MusicCardProps) {
+export default async function MusicCardOnServer({title, artist, imgUrl, musicUrl} : MusicCardProps) {
 
     const base64 = await imgToBase64(imgUrl)
 
