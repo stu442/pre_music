@@ -21,7 +21,7 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
         }
     }, [volume])
 
-    const playPauseToggle = () => {
+    const playPauseToggle = (e:any) => {
 
       if (musicUrl === null) {
         toast({
@@ -45,12 +45,12 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
     return (
         <>
               <button className='flex justify-center items-center w-full h-full fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' onClick={playPauseToggle}>
-                {volume === 0 ? (
-                  isVisible && <Image className='bg-white/10 p-2 rounded-full transition duration-500 ease-linear' src="/icons/speaker_off.svg" alt="음소거" width={120} height={120} />
-                ) : (
-                  isVisible && <Image className='bg-white/10 p-2 rounded-full' src="/icons/speaker_on.svg" alt="음량 켜짐" width={120} height={120} />
-                )}
               </button>
+                {volume === 0 ? (
+                  isVisible && <Image style={{zIndex:1000, pointerEvents:'none'}} className='bg-white/10 p-2 rounded-full transition duration-500 ease-linear fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' src="/icons/speaker_off.svg" alt="음소거" width={120} height={120} />
+                ) : (
+                  isVisible && <Image style={{zIndex:1000, pointerEvents:'none'}} className='bg-white/10 p-2 rounded-full fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' src="/icons/speaker_on.svg" alt="음량 켜짐" width={120} height={120} />
+                )}
             {musicUrl && <audio
             ref={audioRef} 
             className='hidden' 

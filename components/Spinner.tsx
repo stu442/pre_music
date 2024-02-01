@@ -6,8 +6,8 @@ export default function Spinner() {
         src="/icons/spinner.svg"
         alt="loading_spinner"
         className='animate-spin fixed inset-x-0 mx-auto'
-        width={200}
-        height={200}
+        width={150}
+        height={150}
         />
     )
 }

@@ -1,6 +1,4 @@
 import MusicList from "@/components/MusicList";
-import Spinner from "@/components/Spinner";
-import { Suspense } from "react";
 
 export default async function Page({searchParams} : {searchParams : {keyword:string}}) {
     return (

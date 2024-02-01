@@ -5,17 +5,17 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog"
 import AudioPlayer from './AudioPlayer'
-import { getPlaiceholder } from 'plaiceholder'
-// import { imgToBase64 } from '@/lib/imgToBase64'
+import Likes from './Likes'
 
 interface MusicCardProps {
     title : string,
     artist : string | string[],
     imgUrl : string
     musicUrl : string | null
+    id : string
 }
 
-export default function MusicCardOnClient({title, artist, imgUrl, musicUrl} : MusicCardProps) {
+export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, id} : MusicCardProps) {
 
     return (
         <Dialog>
@@ -38,11 +38,12 @@ export default function MusicCardOnClient({title, artist, imgUrl, musicUrl} : Mu
                 placeholder='blur' 
                 blurDataURL="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
                 />
+                <AudioPlayer musicUrl={musicUrl} />
                 <div className='flex flex-col items-center fixed left-[50%] top-[45%] translate-x-[-50%] translate-y-[-50%] gap-4'>
                     <h3 className='text-white text-3xl text-center'>{title}</h3>
                     <p className='text-white/70 text-xl text-center'>{artist}</p>
+                    <Likes musicId={id} />
                 </div>
-                <AudioPlayer musicUrl={musicUrl} />
             </DialogContent>
         </Dialog>
     )

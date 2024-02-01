@@ -1,3 +1,5 @@
+// TODO : 더 범용성 있게 리팩토링하기
+
 'use client'
 
 import { fetchSearchData } from '@/api/fetchSearchData';
@@ -21,10 +23,15 @@ export const nextLinkState = atom({
     default: null
 })
 
+export const loadingState = atom({
+    key: "loadingState",
+    default: true
+})
+
 export default function MusicList({keyword} : MusicListProps) {
     const [musicList, setMusicList] = useRecoilState(musicListState);
     const [nextLink, setNextLink] = useRecoilState(nextLinkState);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useRecoilState(loadingState);
     
     useEffect(() => {
         (async () => {
@@ -33,13 +40,13 @@ export default function MusicList({keyword} : MusicListProps) {
             setNextLink(tracks.next);
             setIsLoading(false);
         })();
-    }, [keyword, setMusicList, setNextLink])
+    }, [keyword, setMusicList, setNextLink, setIsLoading])
 
     return (
         <>
             {isLoading && <Spinner />}
             {!isLoading && musicList.length === 0 && "검색결과가 없습니다."}
-            {!isLoading && musicList.length > 0 && (
+            {musicList.length > 0 && (
             <>
                 {musicList.map((item: SpotifyTrack, id: number) => (
                 <MusicCardOnClient
@@ -48,12 +55,12 @@ export default function MusicList({keyword} : MusicListProps) {
                     artist={item.album.artists[0].name}
                     imgUrl={item.album.images[0].url}
                     musicUrl={item.preview_url}
+                    id={item.id}
                 />
                 ))}
                 <IntersectionObserverComponent />
             </>
             )}
-
         </>
     )
 }

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { musicListState, nextLinkState } from './MusicList';
+import { loadingState, musicListState, nextLinkState } from './MusicList';
 import { fetchSearchData } from '@/api/fetchSearchData';
 
 
@@ -10,16 +10,19 @@ const IntersectionObserverComponent: React.FC = () => {
 
   const [musicList, setMusicList] = useRecoilState(musicListState);
   const [nextLink, setNextLink] = useRecoilState(nextLinkState);
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
   
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const fetchMore = useCallback(async () => {
     if (nextLink) {
+        setIsLoading(true)
         const { tracks } = await fetchSearchData("안녕", 'track', nextLink);
         setMusicList(musicList.concat(tracks.items));
         setNextLink(tracks.next);
+        setIsLoading(false)
     }
-}, [musicList, nextLink, setMusicList, setNextLink]);
+}, [musicList, nextLink, setMusicList, setNextLink, setIsLoading]);
 
   
   useEffect(() => {
