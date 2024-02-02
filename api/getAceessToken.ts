@@ -1,6 +1,7 @@
 // TODO : 에러 처리 고민해보기
+// TODO : 리펙토링 무조건 하기
 
-interface AccessTokenProps {
+export interface AccessTokenProps {
     access_token: string;
     token_type: string;
     expires_in: number;
@@ -10,6 +11,7 @@ const API_ENDPOINT = 'https://accounts.spotify.com/api/token';
 
 export const getAccessToken = async (): Promise<AccessTokenProps> => {
   try {
+    console.log("Access Token request!!")
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -22,12 +24,12 @@ export const getAccessToken = async (): Promise<AccessTokenProps> => {
       }),
       cache : 'no-store'
     });
-
     if (!response.ok) {
       throw new Error('Failed to get access token');
     }
-
-    return await response.json();
+    const accessToken = await response.json();
+    localStorage.setItem('spotifyAccessToken', JSON.stringify(accessToken));
+    return accessToken
   } catch (error) {
     throw new Error('Failed to get access token');
   }

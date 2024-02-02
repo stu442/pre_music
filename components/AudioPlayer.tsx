@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { useToast } from './ui/use-toast';
 
@@ -15,14 +15,7 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
     const timerId = useRef<NodeJS.Timeout | null>(null);
     const { toast } = useToast()
 
-    useEffect(() => {
-        if(audioRef.current) {
-            audioRef.current.volume = volume
-        }
-    }, [volume])
-
-    const playPauseToggle = (e:any) => {
-
+    const handleMusicUrlError = useCallback(() => {
       if (musicUrl === null) {
         toast({
           title: 'Error',
@@ -30,10 +23,24 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
           variant: 'destructive',
         })
       }
+    }, [musicUrl, toast]);
+    
+    useEffect(() => {
+        if(audioRef.current) {
+            audioRef.current.volume = volume
+        }
+
+        handleMusicUrlError();
+
+    }, [volume, handleMusicUrlError])
+
+
+    const playPauseToggle = (e:any) => {
+
+      handleMusicUrlError();
       if(timerId.current) {
         clearTimeout(timerId.current);
       }
-      
       setIsVisible(true);
       timerId.current = setTimeout(() => {
         setIsVisible(false);
