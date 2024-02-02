@@ -3,9 +3,11 @@
 
 import { AccessTokenProps, getAccessToken } from "./getAceessToken"
 
-export const fetchTrackData = async (id:string) => {
+export const fetchTrackData = async (ids:string[] | null) => {
   try {
-    const API_URL = `https://api.spotify.com/v1/tracks/${id}`
+    const joinedIds = ids ? ids.join(',') : '';
+    const API_URL = `https://api.spotify.com/v1/tracks/?ids=${joinedIds}`;
+    // console.log(API_URL)
     let accessToken: AccessTokenProps | null = JSON.parse(localStorage.getItem('spotifyAccessToken') || 'null');
 
     if(accessToken === null) {

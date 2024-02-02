@@ -17,6 +17,10 @@ interface SpotifyArtist {
     preview_url: string | null;
     id: string;
   }
+
+  interface SpotifyTracks {
+    tracks: SpotifyTrack[]
+  }
   
   interface SpotifyAPIResponse {
     tracks: {

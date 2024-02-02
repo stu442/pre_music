@@ -1,3 +1,5 @@
+
+
 import {
     Carousel,
     CarouselContent,
@@ -11,22 +13,17 @@ import { useEffect, useState } from "react"
 
 interface HomeMusicListProps {
     title: string
-    contents_id: ContentsItem[] | null
+    contents_id: string[] | null
 }
-
-interface ContentsItem {
-    contents_id: string
-  }
 
 export default function HomeMuisicList({title, contents_id} : HomeMusicListProps) {
 
-    const [trackData, setTrackData] = useState<SpotifyTrack[]>([])
+    const [trackData, setTrackData] = useState<SpotifyTracks>()
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const promises = contents_id!.map(item => fetchTrackData(item.contents_id));
-            const data = await Promise.all(promises);
+            const data = await fetchTrackData(contents_id);
             setTrackData(data);
           } catch (error) {
             console.error('Error fetching track data:', error);
@@ -40,13 +37,13 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
         <>
             <h2 className="text-lg mt-8 mb-4 font-medium">{title}</h2>
             <Carousel>
-            <CarouselContent className="-ml-4">
-                {trackData?.map((item, idx) => (
-                    <CarouselItem key={`${title}${idx}`} className="basis-1/4 pl-4">
+            <CarouselContent>
+                {trackData?.tracks.map((item, idx) => (
+                    <CarouselItem key={`${title}${idx}`} className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2">
                         <MusicCardOnClient
                             title={item?.name}
-                            artist={item.album?.artists[0].name}
-                            imgUrl={item.album?.images[0].url}
+                            artist={item?.album?.artists[0].name}
+                            imgUrl={item?.album?.images[0].url}
                             musicUrl={item?.preview_url}
                             id={item?.id}
                         />
