@@ -13,7 +13,6 @@ export const fetchTrackData = async (ids:string[] | null) => {
     if(accessToken === null) {
       accessToken = await getAccessToken();
     }
-
     const response = await fetch(API_URL ,{
         headers: {
             'Authorization': `Bearer ${accessToken?.access_token}`

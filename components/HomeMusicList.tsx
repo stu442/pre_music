@@ -21,6 +21,7 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
     const [trackData, setTrackData] = useState<SpotifyTracks>()
 
     useEffect(() => {
+      if (contents_id && contents_id.length > 0) {
         const fetchData = async () => {
           try {
             const data = await fetchTrackData(contents_id);
@@ -30,16 +31,16 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
           }
         };
         fetchData();
-      }, [contents_id]);
-
-
+      }
+    }, [contents_id]);
+    
     return (
         <>
             <h2 className="text-lg mt-8 mb-4 font-medium">{title}</h2>
             <Carousel>
             <CarouselContent>
-                {trackData?.tracks.map((item, idx) => (
-                    <CarouselItem key={`${title}${idx}`} className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2">
+                {trackData?.tracks?.map((item, idx) => (
+                    <CarouselItem key={`${title}${idx}`} className="basis-1/2 lg:basis-1/4 md:basis-1/3 sm:basis-1/2">
                         <MusicCardOnClient
                             title={item?.name}
                             artist={item?.album?.artists[0].name}
@@ -50,8 +51,9 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            {/* TODO : 넣을지 말지 정하기 */}
+            {/* <CarouselPrevious />
+            <CarouselNext /> */}
             </Carousel>
         </>
     )

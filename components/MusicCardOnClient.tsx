@@ -30,10 +30,12 @@ export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, id} 
                 <h3 className='mt-2'>{title}</h3>
                 <p className='text-sm text-black/70'>{artist}</p>
             </DialogTrigger>
-            <DialogContent>
+            {/* TODO : 이미지 크기 정사각형 안되는 에러 */}
+            <DialogContent className='w-[420px] h-[420px] md:w-[640px] md:h-[640px]'>
                 <Image 
                 className='aspect-square brightness-50'
-                width={640} height={640} 
+                // width={640} height={640} 
+                fill={true}
                 src={imgUrl} alt='music_img' 
                 placeholder='blur' 
                 blurDataURL="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="

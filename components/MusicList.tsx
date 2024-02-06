@@ -3,7 +3,7 @@
 'use client'
 
 import { fetchSearchData } from '@/api/fetchSearchData';
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import MusicCardOnClient from './MusicCardOnClient';
 import IntersectionObserverComponent from './IntersectionObserverComponents';
 import { atom, useRecoilState } from 'recoil';

@@ -28,7 +28,7 @@ export default function LoginBtn() {
       }
 
     return (
-        <div className='flex flex-row-reverse'>
+        <div className='flex flex-row-reverse mb-4'>
             {!isLogin ? 
               <Button style={{backgroundColor: "#FEE500", color : "#000000 85%"}} onClick={signInWithKakao} size={'lg'} variant="secondary" >카카오 로그인</Button>
             : <Button size={'lg'} variant="secondary" onClick={signOut}>로그아웃</Button>
