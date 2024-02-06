@@ -25,33 +25,36 @@ const IntersectionObserverComponent: React.FC = () => {
 }, [musicList, nextLink, setMusicList, setNextLink, setIsLoading]);
 
   
-  useEffect(() => {
-    const options: IntersectionObserverInit = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5,
-    };
+useEffect(() => {
+  const options: IntersectionObserverInit = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+  };
 
-    const callback: IntersectionObserverCallback = (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          fetchMore();
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(callback, options);
-
-    if (targetRef.current) {
-      observer.observe(targetRef.current);
-    }
-
-    return () => {
-      if (targetRef.current) {
-        observer.unobserve(targetRef.current);
+  const callback: IntersectionObserverCallback = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        fetchMore();
       }
-    };
-  }, [fetchMore]); // 한 번만 실행
+    });
+  };
+
+  const observer = new IntersectionObserver(callback, options);
+
+  const currentTargetRef = targetRef.current; // targetRef.current의 현재 값 복사
+
+  if (currentTargetRef) {
+    observer.observe(currentTargetRef);
+  }
+
+  return () => {
+    if (currentTargetRef) {
+      observer.unobserve(currentTargetRef);
+    }
+  };
+}, [fetchMore]); // 한 번만 실행
+
 
   return (
     <div ref={targetRef} style={{ height: '100px' }}>
