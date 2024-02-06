@@ -3,6 +3,7 @@
 import { supabase } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button"
+import { redirect } from 'next/dist/server/api-utils';
 
 export default function LoginBtn() {
   
@@ -18,6 +19,9 @@ export default function LoginBtn() {
     async function signInWithKakao() {
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'kakao',
+          options: {
+            redirectTo: window.location.origin
+          }
         })
         console.log(error)
       }

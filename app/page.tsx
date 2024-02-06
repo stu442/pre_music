@@ -73,10 +73,6 @@ export default function Home() {
   return (
 
     <>
-    {/* TODO : 이 방식 잘 생각해보기... */}
-      {/* {adminMusic?.length && <HomeMuisicList title="주인장 추천 음악" contents_id={adminMusic} />}
-      {mostLikedMusic?.length && <HomeMuisicList title="회원님들의 픽" contents_id={mostLikedMusic} />}
-      {recentMusic?.length && <HomeMuisicList title="최근 좋아요 받은 음악" contents_id={recentMusic} />} */}
       {!adminMusic?.length && !mostLikedMusic?.length && !recentMusic?.length && (
         <Spinner />
       )}
