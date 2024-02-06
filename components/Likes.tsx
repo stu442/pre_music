@@ -1,11 +1,15 @@
 import { supabase } from '@/lib/utils';
-import { User } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import { useToast } from './ui/use-toast';
 
 interface LikesProps {
     musicId: string;
+}
+
+interface SessionData {
+    session: Session | null | undefined;
 }
 
 export default function Likes({musicId} : LikesProps) {
@@ -18,9 +22,14 @@ export default function Likes({musicId} : LikesProps) {
     useEffect(() => {
         async function fetchUserData() {
             try {
-                const { data: { user } } = await supabase.auth.getUser();
-                setUserData(user)
-                return user
+                const { data, error } = await supabase.auth.getSession()
+                if(data.session === null) {
+                    console.error(error)
+                    return
+                } else {
+                    setUserData(data.session.user)
+                    return data.session.user
+                }
             } catch (error) {
                 console.error(error)
             }
