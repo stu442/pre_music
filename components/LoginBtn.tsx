@@ -19,9 +19,6 @@ export default function LoginBtn() {
     async function signInWithKakao() {
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'kakao',
-          options: {
-            redirectTo: window.location.origin
-          }
         })
         console.log(error)
       }
