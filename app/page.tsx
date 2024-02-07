@@ -10,6 +10,10 @@ interface ContentsItem {
   contents_id: string
 }
 
+interface GroupedContents {
+  [key: string]: number
+}
+
 export default function Home() {
 
   const [mostLikedMusic, setMostLikedMusic] = useState<string[] | null>([])
@@ -19,17 +23,30 @@ export default function Home() {
   const FETCHNUM = 10
 
   useEffect(() => {
-
-    // TODO : COUNT 함수 잘 쓰기 
-    // https://supabase.com/docs/reference/javascript/insert?example=querying-with-count-option
-
     async function fetchMostLikedMusic() {
       let { data , error } = await supabase
       .from('LIKES')
       .select('contents_id')
       .order('liked_at', { ascending: false })
       .limit(FETCHNUM)
-      setMostLikedMusic(extractedIds(data));
+
+      if(data === null) {
+        setMostLikedMusic(data)
+      } else {
+        const groupedContents:GroupedContents = {};
+        data.forEach((item) => {
+          if (!groupedContents[item.contents_id]) {
+            groupedContents[item.contents_id] = 0;
+          }
+          groupedContents[item.contents_id]++;
+        });
+        const sortedContents = (Object.entries(groupedContents))
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, FETCHNUM)
+        .map(([contentsId]) => contentsId);
+        setMostLikedMusic(sortedContents);
+      }
+
     }
 
     async function fetchRecentMusic() {

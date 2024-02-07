@@ -1,11 +1,7 @@
-
-
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
   } from "@/components/ui/carousel"
 import MusicCardOnClient from "./MusicCardOnClient"
 import { fetchTrackData } from "@/api/fetchTrackData"
@@ -51,9 +47,6 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            {/* TODO : 넣을지 말지 정하기 */}
-            {/* <CarouselPrevious />
-            <CarouselNext /> */}
             </Carousel>
         </>
     )
