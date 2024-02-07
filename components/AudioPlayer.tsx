@@ -35,8 +35,23 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
     }, [volume, handleMusicUrlError])
 
 
-    const playPauseToggle = (e:any) => {
+    const playPauseToggleMouse = () => {
 
+      handleMusicUrlError();
+      if(timerId.current) {
+        clearTimeout(timerId.current);
+      }
+      setIsVisible(true);
+      timerId.current = setTimeout(() => {
+        setIsVisible(false);
+      }, 1000);
+
+      setVolume((prevVolume) => (prevVolume === 0 ? 0.4 : 0));
+    };
+    
+    const playPauseToggleTouch = (e:React.TouchEvent<HTMLButtonElement>) => {
+
+      e.preventDefault()
       handleMusicUrlError();
       if(timerId.current) {
         clearTimeout(timerId.current);
@@ -51,7 +66,7 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
     
     return (
         <>
-              <button className='flex justify-center items-center w-full h-full fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' onClick={playPauseToggle}>
+              <button className='flex justify-center items-center w-full h-full fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' onClick={playPauseToggleMouse} onTouchEnd={e => playPauseToggleTouch(e)}>
               </button>
                 {volume === 0 ? (
                   isVisible && <Image style={{zIndex:1000, pointerEvents:'none'}} className='bg-white/10 p-2 rounded-full transition duration-500 ease-linear fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]' src="/icons/speaker_off.svg" alt="음소거" width={120} height={120} />
