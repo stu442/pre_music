@@ -20,6 +20,9 @@ export default function Home() {
 
   useEffect(() => {
 
+    // TODO : COUNT 함수 잘 쓰기 
+    // https://supabase.com/docs/reference/javascript/insert?example=querying-with-count-option
+
     async function fetchMostLikedMusic() {
       let { data , error } = await supabase
       .from('LIKES')
