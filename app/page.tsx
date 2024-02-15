@@ -23,17 +23,12 @@ export default function Home() {
   const FETCHNUM = 10
 
   useEffect(() => {
-    async function fetchMostLikedMusic() {
-      let { data , error } = await supabase
-      .from('LIKES')
-      .select('contents_id')
-      .order('liked_at', { ascending: false })
-      .limit(FETCHNUM)
 
+    function sortLikedMusic(data : ContentsItem[] | null) {
       if(data === null) {
         setMostLikedMusic(data)
       } else {
-        const groupedContents:GroupedContents = {};
+      const groupedContents:GroupedContents = {};
         data.forEach((item) => {
           if (!groupedContents[item.contents_id]) {
             groupedContents[item.contents_id] = 0;
@@ -46,7 +41,15 @@ export default function Home() {
         .map(([contentsId]) => contentsId);
         setMostLikedMusic(sortedContents);
       }
+    }
 
+    async function fetchSortedMostLikedMusic() {
+      let { data , error } = await supabase
+      .from('LIKES')
+      .select('contents_id')
+      .order('liked_at', { ascending: false })
+      .limit(FETCHNUM)
+      sortLikedMusic(data)
     }
 
     async function fetchRecentMusic() {
@@ -69,7 +72,7 @@ export default function Home() {
     
     (async () => {
       await initAccessToken()
-      await fetchMostLikedMusic()
+      await fetchSortedMostLikedMusic()
       await fetchRecentMusic()
       await fetchAdminMusic()
     })()
@@ -84,7 +87,8 @@ export default function Home() {
   }
 
   function extractedIds(data : ContentsItem[] | null) {
-    // TODO : 이것도 괜찮을까??
+    // TODO : 이거 생각해보기
+    // NULL 체크를 다른 곳에서 하는지?
     const extractedData = data!.map(item => item.contents_id);
     return extractedData
   }
