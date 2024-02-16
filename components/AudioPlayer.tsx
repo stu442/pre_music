@@ -34,8 +34,6 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
 
     }, [volume, handleMusicUrlError])
 
-
-    // TODO : 하나의 함수로 합치기 
     const playPauseToggleMouse = () => {
 
       handleMusicUrlError();

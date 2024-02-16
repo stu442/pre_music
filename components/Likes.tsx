@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/utils';
-import { Session, User } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
 import { useToast } from './ui/use-toast';
@@ -8,16 +8,15 @@ interface LikesProps {
     musicId: string;
 }
 
-interface SessionData {
-    session: Session | null | undefined;
-}
-
 export default function Likes({musicId} : LikesProps) {
 
     const [userData, setUserData] = useState<User | null>(null);
     const [isLike, setIsLike] = useState(false);
     const [likeCount, setLikeCount] = useState<number | null>(0);
     const { toast } = useToast()
+
+    // TODO : console.error 없애기
+    // TODO : 에러 처리 제대로 하기
     
     useEffect(() => {
         async function fetchUserData() {
@@ -89,13 +88,11 @@ export default function Likes({musicId} : LikesProps) {
             { contents_id: musicId, user_id: userData?.id },
             ])
             .select()
-            console.log("store!!", data)
         } else {
             const { data, error } = await supabase
             .from('LIKES')
             .delete()
             .eq('contents_id', musicId)
-            console.log("delete!!", data)
         }
     }
 

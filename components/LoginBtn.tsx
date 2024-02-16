@@ -3,11 +3,11 @@
 import { supabase } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button"
-import { redirect } from 'next/dist/server/api-utils';
 
 export default function LoginBtn() {
   
   const [isLogin, setIsLogin] = useState(false);
+  // TODO : 에러처리 하기
 
   useEffect(() => {
     (async () => {
@@ -20,7 +20,7 @@ export default function LoginBtn() {
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'kakao',
         })
-        console.log(error)
+        console.error(error)
       }
 
       async function signOut() {

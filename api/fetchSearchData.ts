@@ -1,5 +1,4 @@
 // TODO : 에러 처리 고민해보기
-// TODO : 리펙토링 무조건 하기
 
 import { AccessTokenProps, getAccessToken } from "./getAceessToken"
 

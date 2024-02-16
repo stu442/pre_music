@@ -43,6 +43,9 @@ export default function Home() {
       }
     }
 
+    // TODO : fetch 3종 세트 정리하기
+    // TODO : fetch 3종 세트 NULL 체크하고, 오류 내보내기
+
     async function fetchSortedMostLikedMusic() {
       let { data , error } = await supabase
       .from('LIKES')
@@ -88,7 +91,7 @@ export default function Home() {
 
   function extractedIds(data : ContentsItem[] | null) {
     // TODO : 이거 생각해보기
-    // NULL 체크를 다른 곳에서 하는지?
+    // Fetch 단에서 NULL 체크 할 예정 (매개변수에 null 이 있을 필요가 없음)
     const extractedData = data!.map(item => item.contents_id);
     return extractedData
   }

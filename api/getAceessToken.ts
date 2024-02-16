@@ -1,5 +1,4 @@
 // TODO : 에러 처리 고민해보기
-// TODO : 리펙토링 무조건 하기
 
 export interface AccessTokenProps {
     access_token: string;
@@ -11,7 +10,6 @@ const API_ENDPOINT = 'https://accounts.spotify.com/api/token';
 
 export const getAccessToken = async (): Promise<AccessTokenProps> => {
   try {
-    console.log("Access Token request!!")
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {
