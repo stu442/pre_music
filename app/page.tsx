@@ -3,8 +3,9 @@
 import { AccessTokenProps, getAccessToken } from "@/api/getAceessToken";
 import HomeMuisicList from "@/components/HomeMusicList";
 import Spinner from "@/components/Spinner";
+import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface ContentsItem {
   contents_id: string
@@ -26,8 +27,9 @@ export default function Home() {
 
     function sortLikedMusic(data : ContentsItem[] | null) {
       if(data === null) {
-        setMostLikedMusic(data)
-      } else {
+        setMostLikedMusic(null)
+        return
+      } 
       const groupedContents:GroupedContents = {};
         data.forEach((item) => {
           if (!groupedContents[item.contents_id]) {
@@ -40,44 +42,67 @@ export default function Home() {
         .slice(0, FETCHNUM)
         .map(([contentsId]) => contentsId);
         setMostLikedMusic(sortedContents);
+    }
+    
+    async function fetchMusicFromTable(tableName: string, setMusicCallback: Dispatch<SetStateAction<string[] | null>>) {
+      try {
+        const { data, error } = await supabase
+          .from(tableName)
+          .select('contents_id')
+          .order('liked_at', { ascending: false })
+          .limit(FETCHNUM);
+        
+        if (error) {
+          throw new Error('음악을 불러오는데 실패했습니다.');
+        }
+    
+        setMusicCallback(extractedIds(data));
+      } catch (error) {
+        toast({
+          title: '에러',
+          description: "" + error,
+          variant: 'destructive',
+        })
       }
     }
-
-    // TODO : fetch 3종 세트 정리하기
-    // TODO : fetch 3종 세트 NULL 체크하고, 오류 내보내기
+    
 
     async function fetchSortedMostLikedMusic() {
-      let { data , error } = await supabase
-      .from('LIKES')
-      .select('contents_id')
-      .order('liked_at', { ascending: false })
-      .limit(FETCHNUM)
-      sortLikedMusic(data)
+      try {
+        const { data, error } = await supabase
+          .from('LIKES')
+          .select('contents_id')
+          .order('liked_at', { ascending: false })
+          .limit(FETCHNUM);
+    
+        if (error) {
+          throw new Error('음악을 불러오는데 실패했습니다.');
+        }
+    
+        sortLikedMusic(data);
+      } catch (error) {
+          toast({
+            title: '에러',
+            description: "" + error,
+            variant: 'destructive',
+          })
+      }
     }
-
+    
+    
     async function fetchRecentMusic() {
-      const { data, error } = await supabase
-      .from('LIKES')
-      .select('contents_id')
-      .order('liked_at', { ascending: false })
-      .limit(FETCHNUM)
-      setRecentMusic(extractedIds(data))
+      await fetchMusicFromTable('LIKES', setRecentMusic);
     }
-  
+    
     async function fetchAdminMusic() {
-      const { data, error } = await supabase
-      .from('ADMIN_LIKES')
-      .select('contents_id')
-      .order('liked_at', { ascending: false })
-      .limit(FETCHNUM)
-      setAdminMusic(extractedIds(data))
+      await fetchMusicFromTable('ADMIN_LIKES', setAdminMusic);
     }
     
     (async () => {
-      await initAccessToken()
-      await fetchSortedMostLikedMusic()
-      await fetchRecentMusic()
-      await fetchAdminMusic()
+        await initAccessToken()
+        await fetchSortedMostLikedMusic()
+        await fetchRecentMusic()
+        await fetchAdminMusic()
     })()
   }, [])
 
@@ -90,15 +115,15 @@ export default function Home() {
   }
 
   function extractedIds(data : ContentsItem[] | null) {
-    // TODO : 이거 생각해보기
-    // Fetch 단에서 NULL 체크 할 예정 (매개변수에 null 이 있을 필요가 없음)
-    const extractedData = data!.map(item => item.contents_id);
+    if(data === null) {
+      return null
+    }
+    const extractedData = data.map(item => item.contents_id);
     return extractedData
   }
 
 
   return (
-
     <>
       {!adminMusic?.length && !mostLikedMusic?.length && !recentMusic?.length && (
         <Spinner />
