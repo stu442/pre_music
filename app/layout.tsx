@@ -8,7 +8,7 @@ import LoginBtn from '@/components/LoginBtn'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Pre_Music',
+  title: 'BeatSpot',
   description: '좋아하는 음악을 자랑하고, 추천해보세요. 그리고 새로운 음악을 찾아봐요!',
   icons : {
     icon: '/icons/favicon.ico'
