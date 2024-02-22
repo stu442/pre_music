@@ -1,5 +1,3 @@
-// TODO : 에러 처리 고민해보기
-
 import { AccessTokenProps, getAccessToken } from "./getAceessToken"
 
 export const fetchTrackData = async (ids:string[] | null) => {
@@ -29,10 +27,9 @@ export const fetchTrackData = async (ids:string[] | null) => {
     const data = await response.json();
     return data
   }
-
     const data = await response.json();
     return data
   } catch (error) {
-    console.error('Error:', error);
+    throw new Error("트랙 데이터를 불러오는데 실패했습니다.")
   }
 };

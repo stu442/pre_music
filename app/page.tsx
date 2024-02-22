@@ -3,7 +3,7 @@
 import { AccessTokenProps, getAccessToken } from "@/api/getAceessToken";
 import HomeMuisicList from "@/components/HomeMusicList";
 import Spinner from "@/components/Spinner";
-import { toast } from "@/components/ui/use-toast";
+import { errorToast } from "@/components/ui/use-toast";
 import { supabase } from "@/lib/utils";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -51,22 +51,15 @@ export default function Home() {
           .select('contents_id')
           .order('liked_at', { ascending: false })
           .limit(FETCHNUM);
-        
         if (error) {
           throw new Error('음악을 불러오는데 실패했습니다.');
         }
-    
         setMusicCallback(extractedIds(data));
       } catch (error) {
-        toast({
-          title: '에러',
-          description: "" + error,
-          variant: 'destructive',
-        })
+        errorToast(error);
       }
     }
     
-
     async function fetchSortedMostLikedMusic() {
       try {
         const { data, error } = await supabase
@@ -78,17 +71,11 @@ export default function Home() {
         if (error) {
           throw new Error('음악을 불러오는데 실패했습니다.');
         }
-    
         sortLikedMusic(data);
       } catch (error) {
-          toast({
-            title: '에러',
-            description: "" + error,
-            variant: 'destructive',
-          })
+        errorToast(error);
       }
     }
-    
     
     async function fetchRecentMusic() {
       await fetchMusicFromTable('LIKES', setRecentMusic);

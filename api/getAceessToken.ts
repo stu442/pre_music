@@ -1,5 +1,3 @@
-// TODO : 에러 처리 고민해보기
-
 export interface AccessTokenProps {
     access_token: string;
     token_type: string;
@@ -23,12 +21,12 @@ export const getAccessToken = async (): Promise<AccessTokenProps> => {
       cache : 'no-store'
     });
     if (!response.ok) {
-      throw new Error('Failed to get access token');
+      throw new Error('토큰을 가져오는 중 오류가 발생했습니다.');
     }
     const accessToken = await response.json();
     localStorage.setItem('spotifyAccessToken', JSON.stringify(accessToken));
     return accessToken
   } catch (error) {
-    throw new Error('Failed to get access token');
+    throw new Error('토큰을 가져오는 중 오류가 발생했습니다.');
   }
 };

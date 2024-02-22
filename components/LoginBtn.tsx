@@ -3,11 +3,11 @@
 import { supabase } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button"
+import { errorToast } from './ui/use-toast';
 
 export default function LoginBtn() {
   
   const [isLogin, setIsLogin] = useState(false);
-  // TODO : 에러처리 하기
 
   useEffect(() => {
     (async () => {
@@ -16,17 +16,30 @@ export default function LoginBtn() {
     })()
   }, [])
 
-    async function signInWithKakao() {
+  async function signInWithKakao() {
+    try {
         const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'kakao',
-        })
-        console.error(error)
-      }
+            provider: 'kakao',
+        });
+        if (error) {
+            throw new Error("로그인 중 에러가 발생했습니다.");
+        }
+    } catch (error) {
+      errorToast(error)
+    }
+}
 
-      async function signOut() {
-        const { error } = await supabase.auth.signOut();
-        setIsLogin(false)
+async function signOut() {
+  try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+          throw new Error("로그아웃 중 에러가 발생했습니다.");
       }
+      setIsLogin(false);
+  } catch (error) {
+    errorToast(error)
+  }
+}
 
     return (
         <div className='flex flex-row-reverse mb-4'>

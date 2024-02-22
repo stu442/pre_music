@@ -189,4 +189,12 @@ function useToast() {
   }
 }
 
-export { useToast, toast }
+function errorToast(err: any) {
+  toast({
+    title: '에러',
+    description: "" + err,
+    variant: 'destructive',
+  })
+}
+
+export { useToast, toast, errorToast }
