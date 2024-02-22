@@ -1,15 +1,11 @@
 import { supabase } from '@/lib/utils';
-import { Session, User } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
-import { useToast } from './ui/use-toast';
+import { errorToast, useToast } from './ui/use-toast';
 
 interface LikesProps {
     musicId: string;
-}
-
-interface SessionData {
-    session: Session | null | undefined;
 }
 
 export default function Likes({musicId} : LikesProps) {
@@ -23,48 +19,61 @@ export default function Likes({musicId} : LikesProps) {
         async function fetchUserData() {
             try {
                 const { data, error } = await supabase.auth.getSession()
+                if (error) {
+                    throw new Error("유저 데이터를 가져오는 중 에러가 발생했습니다.");
+                }
                 if(data.session === null) {
-                    console.error(error)
-                    return
+                    return null;
                 } else {
-                    setUserData(data.session.user)
-                    return data.session.user
+                    setUserData(data.session.user);
+                    return data.session.user;
                 }
             } catch (error) {
-                console.error(error)
+                errorToast(error)
+                return null;
             }
         }
         
-        async function checkLikes(user : User | null | undefined) {
+        async function checkLikes(user: User | null | undefined) {
             try {
                 if (!user) {
                     return;
                 }
-                const { data } = await supabase
+                const { data, error } = await supabase
                     .from('LIKES')
                     .select('like_id')
                     .eq('user_id', user?.id)
                     .eq('contents_id', musicId);
-                    
+                if (error) {
+                    throw new Error("좋아요 정보를 가져오는 중 에러가 발생했습니다.");
+                }
                 if (data?.length) {
-                    setIsLike(true)
+                    setIsLike(true);
                 }
             } catch (error) {
-                console.error("Error checking likes:", error);
+                errorToast(error)
             }
         }
-
+    
         async function fetchLikesInfo() {
-            let { count, error } = await supabase
-            .from('LIKES')
-            .select('*', {count: 'exact'})
-            .eq('contents_id', musicId)
-            setLikeCount(count);
+            try {
+                const { count, error } = await supabase
+                    .from('LIKES')
+                    .select('*', { count: 'exact' })
+                    .eq('contents_id', musicId);
+                if (error) {
+                    throw new Error("좋아요 정보를 가져오는 중 에러가 발생했습니다.");
+                }
+                setLikeCount(count);
+            } catch (error) {
+                errorToast(error)
+            }
         }
-
-        fetchUserData().then((userData) => checkLikes(userData))
-        fetchLikesInfo()
-    }, [musicId])
+    
+        fetchUserData().then(userData => checkLikes(userData));
+        fetchLikesInfo();
+    }, [musicId, toast]);
+    
 
     async function handleLike() {
         if (!userData) {
@@ -82,22 +91,32 @@ export default function Likes({musicId} : LikesProps) {
     }
 
     async function storeLikeData() {
-        if(!isLike) {
-            const { data, error } = await supabase
-            .from('LIKES')
-            .insert([
-            { contents_id: musicId, user_id: userData?.id },
-            ])
-            .select()
-            console.log("store!!", data)
-        } else {
-            const { data, error } = await supabase
-            .from('LIKES')
-            .delete()
-            .eq('contents_id', musicId)
-            console.log("delete!!", data)
+        try {
+            if(!isLike) {
+                const { data, error } = await supabase
+                    .from('LIKES')
+                    .insert([
+                        { contents_id: musicId, user_id: userData?.id },
+                    ])
+                    .select();
+                if (error) {
+                    throw new Error("좋아요 정보를 업데이트 하는 중 오류가 발생했습니다.");
+                }
+            } else {
+                const { data, error } = await supabase
+                    .from('LIKES')
+                    .delete()
+                    .eq('contents_id', musicId);
+                    
+                if (error) {
+                    throw new Error("좋아요 정보를 업데이트 하는 중 오류가 발생했습니다.");
+                }
+            }
+        } catch (error) {
+            errorToast(error)
         }
     }
+    
 
     return (
         <div onClick={handleLike} className='flex gap-2 items-center text-white mt-2 cursor-pointer'>

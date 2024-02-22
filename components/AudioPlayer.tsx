@@ -34,7 +34,6 @@ export default function AudioPlayer({ musicUrl } : AudioPlayerProps) {
 
     }, [volume, handleMusicUrlError])
 
-
     const playPauseToggleMouse = () => {
 
       handleMusicUrlError();

@@ -1,4 +1,4 @@
-// STUDY : 반드시 한번 공부할 것
+// TODO : 반드시 한번 공부할 것
 
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
@@ -17,6 +17,7 @@ const IntersectionObserverComponent: React.FC = () => {
   const fetchMore = useCallback(async () => {
     if (nextLink) {
         setIsLoading(true)
+        // TODO : q, type 은 없어도 되는데 왜 있어야하지?? 고치자.
         const { tracks } = await fetchSearchData("안녕", 'track', nextLink);
         setMusicList(musicList.concat(tracks.items));
         setNextLink(tracks.next);
@@ -42,7 +43,7 @@ useEffect(() => {
 
   const observer = new IntersectionObserver(callback, options);
 
-  const currentTargetRef = targetRef.current; // targetRef.current의 현재 값 복사
+  const currentTargetRef = targetRef.current;
 
   if (currentTargetRef) {
     observer.observe(currentTargetRef);
@@ -53,7 +54,7 @@ useEffect(() => {
       observer.unobserve(currentTargetRef);
     }
   };
-}, [fetchMore]); // 한 번만 실행
+}, [fetchMore]);
 
 
   return (

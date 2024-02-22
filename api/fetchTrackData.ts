@@ -1,13 +1,9 @@
-// TODO : 에러 처리 고민해보기
-// TODO : 리펙토링 무조건 하기
-
 import { AccessTokenProps, getAccessToken } from "./getAceessToken"
 
 export const fetchTrackData = async (ids:string[] | null) => {
   try {
     const joinedIds = ids ? ids.join(',') : '';
     const API_URL = `https://api.spotify.com/v1/tracks/?ids=${joinedIds}`;
-    // console.log(API_URL)
     let accessToken: AccessTokenProps | null = JSON.parse(localStorage.getItem('spotifyAccessToken') || 'null');
 
     if(accessToken === null) {
@@ -31,10 +27,9 @@ export const fetchTrackData = async (ids:string[] | null) => {
     const data = await response.json();
     return data
   }
-
     const data = await response.json();
     return data
   } catch (error) {
-    console.error('Error:', error);
+    throw new Error("트랙 데이터를 불러오는데 실패했습니다.")
   }
 };
