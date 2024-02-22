@@ -1,5 +1,3 @@
-// TODO : 더 범용성 있게 리팩토링하기
-
 'use client'
 
 import { fetchSearchData } from '@/api/fetchSearchData';

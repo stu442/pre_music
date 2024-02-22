@@ -6,6 +6,7 @@ import {
 import MusicCardOnClient from "./MusicCardOnClient"
 import { fetchTrackData } from "@/api/fetchTrackData"
 import { useEffect, useState } from "react"
+import { errorToast, toast } from "./ui/use-toast"
 
 interface HomeMusicListProps {
     title: string
@@ -23,7 +24,7 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
             const data = await fetchTrackData(contents_id);
             setTrackData(data);
           } catch (error) {
-            console.error('Error fetching track data:', error);
+            errorToast(error)
           }
         };
         fetchData();

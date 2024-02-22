@@ -1,6 +1,3 @@
-// TODO : 에러 처리 고민해보기
-// TODO : 리펙토링 무조건 하기
-
 import { AccessTokenProps, getAccessToken } from "./getAceessToken"
 
 export const fetchSearchData = async (q:string, type:'artist'|'album'|'track', url?:string) => {
@@ -34,6 +31,6 @@ export const fetchSearchData = async (q:string, type:'artist'|'album'|'track', u
     const data = await response.json();
     return data
   } catch (error) {
-    console.error('Error:', error);
+    throw new Error("검색 데이터를 불러오는데 실패했습니다.");
   }
 }
