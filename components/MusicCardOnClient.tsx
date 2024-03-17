@@ -6,6 +6,8 @@ import {
   } from "@/components/ui/dialog"
 import AudioPlayer from './AudioPlayer'
 import Likes from './Likes'
+import { useEffect, useState } from 'react'
+import { imgTobase64 } from '@/app/action'
 
 interface MusicCardProps {
     title : string,
@@ -17,6 +19,17 @@ interface MusicCardProps {
 
 export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, id} : MusicCardProps) {
 
+    const [base64, setBase64] = useState<string | undefined>('');
+
+    useEffect(() => {
+      async function fetchBase64() {
+        const result = await imgTobase64(imgUrl);
+        setBase64(result);
+      }
+
+      fetchBase64();
+    }, [imgUrl]);
+
     return (
         <Dialog>
             <DialogTrigger className='flex flex-col items-center cursor-pointer'>
@@ -25,7 +38,7 @@ export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, id} 
                 className='aspect-square'
                 src={imgUrl} alt='music_img' 
                 placeholder='blur' 
-                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                blurDataURL={base64 || 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII='}
                 />
                 <h3 className='mt-2'>{title}</h3>
                 <p className='text-sm text-black/70'>{artist}</p>
@@ -36,7 +49,7 @@ export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, id} 
                 fill={true}
                 src={imgUrl} alt='music_img' 
                 placeholder='blur' 
-                blurDataURL="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII="
+                blurDataURL={base64 || 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII='}
                 />
                 <AudioPlayer musicUrl={musicUrl} />
                 <div className='flex flex-col items-center fixed left-[50%] top-[45%] translate-x-[-50%] translate-y-[-50%] gap-4'>
