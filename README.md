@@ -3,7 +3,7 @@
 
 ## 배포 주소
 
-[BeatSpot 홈페이지](https://main--beatspot.netlify.app)
+[BeatSpot 홈페이지](https://pre-music-ruddy.vercel.app/)
 
 ## 프로젝트 정보
 
