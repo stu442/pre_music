@@ -6,7 +6,7 @@ import {
 import MusicCardOnClient from "./MusicCardOnClient"
 import { fetchTrackData } from "@/api/fetchTrackData"
 import { useEffect, useState } from "react"
-import { errorToast, toast } from "./ui/use-toast"
+import { errorToast } from "./ui/use-toast"
 
 interface HomeMusicListProps {
     title: string
