@@ -24,9 +24,9 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
         const fetchData = async () => {
           try {
             const data = await fetchTrackData(contents_id);
+            setTrackData(data);
             const base64s = await imgTobase64s(data.tracks);
             setBase64(base64s);
-            setTrackData(data);
           } catch (error) {
             errorToast(error)
           }
