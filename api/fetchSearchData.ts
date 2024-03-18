@@ -4,7 +4,6 @@ export const fetchSearchData = async (q:string, type:'artist'|'album'|'track', u
   try {
     const API_URL = `https://api.spotify.com/v1/search/?q=${q}&type=${type}`
     let accessToken: AccessTokenProps | null = JSON.parse(localStorage.getItem('spotifyAccessToken') || 'null');
-
     if(accessToken === null) {
       accessToken = await getAccessToken();
     }

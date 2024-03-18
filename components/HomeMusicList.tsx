@@ -7,6 +7,7 @@ import MusicCardOnClient from "./MusicCardOnClient"
 import { fetchTrackData } from "@/api/fetchTrackData"
 import { useEffect, useState } from "react"
 import { errorToast } from "./ui/use-toast"
+import { imgTobase64s } from "@/app/action"
 
 interface HomeMusicListProps {
     title: string
@@ -16,12 +17,15 @@ interface HomeMusicListProps {
 export default function HomeMuisicList({title, contents_id} : HomeMusicListProps) {
 
     const [trackData, setTrackData] = useState<SpotifyTracks>()
+    const [base64, setBase64] = useState<(string | undefined)[]>([])
 
     useEffect(() => {
       if (contents_id && contents_id.length > 0) {
         const fetchData = async () => {
           try {
             const data = await fetchTrackData(contents_id);
+            const base64s = await imgTobase64s(data.tracks);
+            setBase64(base64s);
             setTrackData(data);
           } catch (error) {
             errorToast(error)
@@ -43,6 +47,7 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
                             artist={item?.album?.artists[0].name}
                             imgUrl={item?.album?.images[0].url}
                             musicUrl={item?.preview_url}
+                            base64={base64[idx]}
                             id={item?.id}
                         />
                     </CarouselItem>

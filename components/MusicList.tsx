@@ -1,11 +1,12 @@
 'use client'
 
 import { fetchSearchData } from '@/api/fetchSearchData';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import MusicCardOnClient from './MusicCardOnClient';
 import IntersectionObserverComponent from './IntersectionObserverComponents';
 import { atom, useRecoilState } from 'recoil';
 import Spinner from './Spinner';
+import { imgTobase64s } from '@/app/action';
 
 interface MusicListProps {
     keyword: string
@@ -26,10 +27,16 @@ export const loadingState = atom({
     default: true
 })
 
+export const base64State = atom({
+    key: "base64State",
+    default: [] as (string | undefined)[]
+})
+
 export default function MusicList({keyword} : MusicListProps) {
     const [musicList, setMusicList] = useRecoilState(musicListState);
     const [nextLink, setNextLink] = useRecoilState(nextLinkState);
     const [isLoading, setIsLoading] = useRecoilState(loadingState);
+    const [base64, setBase64] = useRecoilState(base64State);
     
     useEffect(() => {
         (async () => {
@@ -37,8 +44,10 @@ export default function MusicList({keyword} : MusicListProps) {
             setMusicList(tracks.items);
             setNextLink(tracks.next);
             setIsLoading(false);
+            const base64s = await imgTobase64s(tracks.items);
+            setBase64(base64s)
         })();
-    }, [keyword, setMusicList, setNextLink, setIsLoading])
+    }, [keyword, setMusicList, setNextLink, setIsLoading, setBase64])
 
     return (
         <>
@@ -53,6 +62,7 @@ export default function MusicList({keyword} : MusicListProps) {
                     artist={item.album.artists[0].name}
                     imgUrl={item.album.images[0].url}
                     musicUrl={item.preview_url}
+                    base64={base64[id]}
                     id={item.id}
                 />
                 ))}
