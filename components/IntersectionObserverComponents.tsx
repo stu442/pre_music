@@ -2,8 +2,9 @@
 
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { loadingState, musicListState, nextLinkState } from './MusicList';
+import { loadingState, musicListState, nextLinkState, base64State } from './MusicList';
 import { fetchSearchData } from '@/api/fetchSearchData';
+import { imgTobase64s } from '@/app/action';
 
 
 const IntersectionObserverComponent: React.FC = () => {
@@ -11,6 +12,7 @@ const IntersectionObserverComponent: React.FC = () => {
   const [musicList, setMusicList] = useRecoilState(musicListState);
   const [nextLink, setNextLink] = useRecoilState(nextLinkState);
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
+  const [base64, setBase64] = useRecoilState(base64State);
   
   const targetRef = useRef<HTMLDivElement | null>(null);
 
@@ -22,8 +24,10 @@ const IntersectionObserverComponent: React.FC = () => {
         setMusicList(musicList.concat(tracks.items));
         setNextLink(tracks.next);
         setIsLoading(false)
+        const base64s = await imgTobase64s(tracks.items);
+        setBase64(pre => pre.concat(base64s))
     }
-}, [musicList, nextLink, setMusicList, setNextLink, setIsLoading]);
+}, [musicList, nextLink, setMusicList, setNextLink, setIsLoading, setBase64]);
 
   
 useEffect(() => {

@@ -12,23 +12,24 @@ import { imgTobase64 } from '@/app/action'
 interface MusicCardProps {
     title : string,
     artist : string | string[],
-    imgUrl : string
-    musicUrl : string | null
+    imgUrl : string,
+    musicUrl : string | null,
+    base64: string | undefined,
     id : string
 }
 
-export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, id} : MusicCardProps) {
+export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, base64, id} : MusicCardProps) {
 
-    const [base64, setBase64] = useState<string | undefined>('');
+    // const [base64, setBase64] = useState<string | undefined>('');
 
-    useEffect(() => {
-      async function fetchBase64() {
-        const result = await imgTobase64(imgUrl);
-        setBase64(result);
-      }
+    // useEffect(() => {
+    //   async function fetchBase64() {
+    //     const result = await imgTobase64(imgUrl);
+    //     setBase64(result);
+    //   }
 
-      fetchBase64();
-    }, [imgUrl]);
+    //   fetchBase64();
+    // }, [imgUrl]);
 
     return (
         <Dialog>
