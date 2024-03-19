@@ -24,7 +24,6 @@ export default function Home() {
   const FETCHNUM = 10
 
   useEffect(() => {
-
     function sortLikedMusic(data : ContentsItem[] | null) {
       if(data === null) {
         setMostLikedMusic(null)
@@ -43,7 +42,6 @@ export default function Home() {
         .map(([contentsId]) => contentsId);
         setMostLikedMusic(sortedContents);
     }
-    
     async function fetchMusicFromTable(tableName: string, setMusicCallback: Dispatch<SetStateAction<string[] | null>>) {
       try {
         const { data, error } = await supabase
@@ -59,7 +57,6 @@ export default function Home() {
         errorToast(error);
       }
     }
-    
     async function fetchSortedMostLikedMusic() {
       try {
         const { data, error } = await supabase
@@ -117,7 +114,6 @@ export default function Home() {
       {<HomeMuisicList title="주인장 추천 음악" contents_id={adminMusic} />}
       {<HomeMuisicList title="회원님들의 픽" contents_id={mostLikedMusic} />}
       {<HomeMuisicList title="최근 좋아요 받은 음악" contents_id={recentMusic} />}
-
     </>
   )
 }

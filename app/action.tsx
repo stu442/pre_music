@@ -10,8 +10,7 @@ export async function imgTobase64(src:string) {
       const { base64 } = await getPlaiceholder(buffer);
       return base64
     } catch (err) {
-      // TODO : 에러처리 하기
-      err;
+      throw new Error("이미지를 불러오는 중 에러가 발생했습니다.")
     }
   }
 
@@ -22,7 +21,6 @@ export async function imgTobase64s(musicList : SpotifyTrack[]) {
     const base64s = await Promise.all(promises);
     return base64s;
   } catch (err) {
-    console.error(err);
-    return []
+    throw new Error("이미지를 불러오는 중 에러가 발생했습니다.")
   }
 }

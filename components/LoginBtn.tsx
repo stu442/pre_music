@@ -16,10 +16,22 @@ export default function LoginBtn() {
     })()
   }, [])
 
+  const getURL = () => {
+    let url = 
+      process.env.NEXT_PUBLIC_LOCAL_URL ??
+      process.env.NEXT_PUBLIC_VERCEL_URL ??
+      'http://localhost:3000';
+
+    return url
+  }
+
   async function signInWithKakao() {
     try {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'kakao',
+            options: {
+              redirectTo: getURL()
+            }
         });
         if (error) {
             throw new Error("로그인 중 에러가 발생했습니다.");
@@ -46,7 +58,6 @@ async function signOut() {
             {!isLogin ? 
               <Button style={{backgroundColor: "#FEE500", color : "#000000 85%"}} onClick={signInWithKakao} size={'lg'} variant="secondary" >카카오 로그인</Button>
             : <Button size={'lg'} variant="secondary" onClick={signOut}>로그아웃</Button>
-            
             }
         </div>
     )
