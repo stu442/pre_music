@@ -6,8 +6,6 @@ import {
   } from "@/components/ui/dialog"
 import AudioPlayer from './AudioPlayer'
 import Likes from './Likes'
-import { useEffect, useState } from 'react'
-import { imgTobase64 } from '@/app/action'
 
 interface MusicCardProps {
     title : string,
@@ -19,17 +17,6 @@ interface MusicCardProps {
 }
 
 export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, base64, id} : MusicCardProps) {
-
-    // const [base64, setBase64] = useState<string | undefined>('');
-
-    // useEffect(() => {
-    //   async function fetchBase64() {
-    //     const result = await imgTobase64(imgUrl);
-    //     setBase64(result);
-    //   }
-
-    //   fetchBase64();
-    // }, [imgUrl]);
 
     return (
         <Dialog>

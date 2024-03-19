@@ -25,15 +25,26 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
           try {
             const data = await fetchTrackData(contents_id);
             setTrackData(data);
-            const base64s = await imgTobase64s(data.tracks);
-            setBase64(base64s);
           } catch (error) {
             errorToast(error)
           }
         };
+
+        const fetchBase64s = async () => {
+          try {
+            if(trackData) {
+              const base64s = await imgTobase64s(trackData.tracks);
+              setBase64(base64s);
+            }
+          } catch(error) {
+            errorToast(error)
+          }
+        };
+        
         fetchData();
+        fetchBase64s();
       }
-    }, [contents_id]);
+    }, [contents_id, trackData]);
     
     return (
         <>
