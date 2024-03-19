@@ -44,7 +44,7 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
         fetchData();
         fetchBase64s();
       }
-    }, [contents_id, trackData]);
+    }, [contents_id]);
     
     return (
         <>

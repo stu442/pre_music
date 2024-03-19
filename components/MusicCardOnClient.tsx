@@ -24,6 +24,7 @@ export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, base
                 <Image 
                 width={320} height={320} 
                 className='aspect-square'
+                data-cy={`music-card-${id}`}
                 src={imgUrl} alt='music_img' 
                 placeholder='blur' 
                 blurDataURL={base64 || 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII='}
@@ -34,12 +35,13 @@ export default function MusicCardOnClient({title, artist, imgUrl, musicUrl, base
             <DialogContent className='w-[420px] h-[420px] md:w-[640px] md:h-[640px]'>
                 <Image 
                 className='aspect-square brightness-50'
+                data-cy={`music-modal-${id}`}
                 fill={true}
                 src={imgUrl} alt='music_img' 
                 placeholder='blur' 
                 blurDataURL={base64 || 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII='}
                 />
-                <AudioPlayer musicUrl={musicUrl} />
+                <AudioPlayer musicUrl={musicUrl} testId={id} />
                 <div className='flex flex-col items-center fixed left-[50%] top-[45%] translate-x-[-50%] translate-y-[-50%] gap-4'>
                     <h3 className='text-white text-3xl text-center'>{title}</h3>
                     <p className='text-white/70 text-xl text-center'>{artist}</p>
