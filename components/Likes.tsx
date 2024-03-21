@@ -119,7 +119,7 @@ export default function Likes({musicId} : LikesProps) {
     
 
     return (
-        <div onClick={handleLike} className='flex gap-2 items-center text-white mt-2 cursor-pointer'>
+        <div onClick={handleLike} className='flex gap-2 items-center text-white mt-2 cursor-pointer' data-cy={`likeBtn_${musicId}`}>
             {!isLike ? (
                 <Image 
                 src="/icons/heart_stroke.svg" 
