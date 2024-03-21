@@ -42,7 +42,7 @@ describe("홈페이지 요소 확인하기", () => {
         cy.get("[data-cy=music-card-6luBKkFUt5wTwz7hpLhp12]").should("be.visible").as("noAudioCard")
         cy.get("@noAudioCard").click();
         // then - 오디오가 없는 모달을 누르면 오디오가 없다는 오류가 나온다.
-        cy.get("[data-cy=toast_1]").should("be.visible").as("toast")
-        cy.get("@toast").find(":last-child").invoke("text").should("eq", "음악이 존재하지 않습니다.")
+        cy.get("li").contains("음악이 존재하지 않습니다.").should("be.visible").as("toast")
+        cy.get("@toast").invoke("text").should("eq", "음악이 존재하지 않습니다.")
     })
 });
