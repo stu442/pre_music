@@ -1,7 +1,7 @@
 'use client'
 
 import { fetchSearchData } from '@/api/fetchSearchData';
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import MusicCardOnClient from './MusicCardOnClient';
 import IntersectionObserverComponent from './IntersectionObserverComponents';
 import { atom, useRecoilState } from 'recoil';
@@ -12,17 +12,17 @@ interface MusicListProps {
     keyword: string
 }
 
-export const musicListState = atom({
+export const musicListState = atom<SpotifyTrack[]>({
     key: "musicListState",
     default: []
 })
 
-export const nextLinkState = atom({
+export const nextLinkState = atom<string | null>({
     key: "nextLinkState",
     default: null
 })
 
-export const loadingState = atom({
+export const loadingState = atom<boolean>({
     key: "loadingState",
     default: true
 })
@@ -33,10 +33,10 @@ export const base64State = atom({
 })
 
 export default function MusicList({keyword} : MusicListProps) {
-    const [musicList, setMusicList] = useRecoilState(musicListState);
-    const [nextLink, setNextLink] = useRecoilState(nextLinkState);
-    const [isLoading, setIsLoading] = useRecoilState(loadingState);
-    const [base64, setBase64] = useRecoilState(base64State);
+    const [musicList, setMusicList] = useRecoilState<SpotifyTrack[]>(musicListState);
+    const [nextLink, setNextLink] = useRecoilState<string | null>(nextLinkState);
+    const [isLoading, setIsLoading] = useRecoilState<boolean>(loadingState);
+    const [base64, setBase64] = useRecoilState<(string | undefined)[]>(base64State);
     
     useEffect(() => {
         (async () => {
