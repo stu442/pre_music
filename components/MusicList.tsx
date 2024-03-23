@@ -4,33 +4,14 @@ import { fetchSearchData } from '@/api/fetchSearchData';
 import { useEffect } from 'react'
 import MusicCardOnClient from './MusicCardOnClient';
 import IntersectionObserverComponent from './IntersectionObserverComponents';
-import { atom, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import Spinner from './Spinner';
 import { imgTobase64s } from '@/app/action';
+import { base64State, loadingState, musicListState, nextLinkState } from '@/atom/musicListAtom';
 
 interface MusicListProps {
     keyword: string
 }
-
-export const musicListState = atom<SpotifyTrack[]>({
-    key: "musicListState",
-    default: []
-})
-
-export const nextLinkState = atom<string | null>({
-    key: "nextLinkState",
-    default: null
-})
-
-export const loadingState = atom<boolean>({
-    key: "loadingState",
-    default: true
-})
-
-export const base64State = atom({
-    key: "base64State",
-    default: [] as (string | undefined)[]
-})
 
 export default function MusicList({keyword} : MusicListProps) {
     const [musicList, setMusicList] = useRecoilState<SpotifyTrack[]>(musicListState);
