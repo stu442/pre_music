@@ -8,9 +8,9 @@ interface ContentsItem {
 
 type MusicType = 'ADMIN' | 'RECENT' | 'MOSTLIKED'
   
-export const useFetchTrackData = (type : MusicType) => {
+export const useFetchContentsId = (type : MusicType) => {
   const FETCHNUM = 10
-  const [track, setTrack] = useState<string[]>([])
+  const [contentsId, setContentsId] = useState<string[]>([])
 
   function extractedIds(data : ContentsItem[]) {
     if(data === null) {
@@ -50,7 +50,7 @@ export const useFetchTrackData = (type : MusicType) => {
         if (error) {
           throw new Error('음악을 불러오는데 실패했습니다.');
         }
-        setTrack(extractedIds(data));
+        setContentsId(extractedIds(data));
       } catch (error) {
         errorToast(error)
       }
@@ -59,5 +59,5 @@ export const useFetchTrackData = (type : MusicType) => {
     fetchMusic();
   }, [type]);
 
-  return { track };
+  return { contentsId };
 };

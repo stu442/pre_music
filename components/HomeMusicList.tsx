@@ -11,19 +11,19 @@ import { useFetchBase64s } from "@/hooks/useFetchBase64"
 
 interface HomeMusicListProps {
     title: string
-    contents_id: string[] | null
+    contentsId: string[] | null
 }
 
-export default function HomeMuisicList({title, contents_id} : HomeMusicListProps) {
+export default function HomeMuisicList({title, contentsId} : HomeMusicListProps) {
 
     const [trackData, setTrackData] = useState<SpotifyTracks>()
     const base64 = useFetchBase64s(trackData)
 
     useEffect(() => {
-      if (contents_id && contents_id.length > 0) {
+      if (contentsId && contentsId.length > 0) {
         const fetchData = async () => {
           try {
-            const data = await fetchTrackData(contents_id);
+            const data = await fetchTrackData(contentsId);
             setTrackData(data);
           } catch (error) {
             errorToast(error)
@@ -32,7 +32,7 @@ export default function HomeMuisicList({title, contents_id} : HomeMusicListProps
         
         fetchData();
       }
-    }, [contents_id]);
+    }, [contentsId]);
     
     return (
         <>
