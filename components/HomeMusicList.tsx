@@ -4,10 +4,8 @@ import {
     CarouselItem,
   } from "@/components/ui/carousel"
 import MusicCardOnClient from "./MusicCardOnClient"
-import { fetchTrackData } from "@/api/fetchTrackData"
-import { useEffect, useState } from "react"
-import { errorToast } from "./ui/use-toast"
 import { useFetchBase64s } from "@/hooks/useFetchBase64"
+import { useFetchTrackData } from "@/hooks/useFetchTrackData"
 
 interface HomeMusicListProps {
     title: string
@@ -15,24 +13,8 @@ interface HomeMusicListProps {
 }
 
 export default function HomeMuisicList({title, contentsId} : HomeMusicListProps) {
-
-    const [trackData, setTrackData] = useState<SpotifyTracks>()
+    const trackData = useFetchTrackData(contentsId)
     const base64 = useFetchBase64s(trackData)
-
-    useEffect(() => {
-      if (contentsId && contentsId.length > 0) {
-        const fetchData = async () => {
-          try {
-            const data = await fetchTrackData(contentsId);
-            setTrackData(data);
-          } catch (error) {
-            errorToast(error)
-          }
-        };
-        
-        fetchData();
-      }
-    }, [contentsId]);
     
     return (
         <>
