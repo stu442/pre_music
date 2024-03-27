@@ -22,7 +22,7 @@ interface SpotifyArtist {
     tracks: SpotifyTrack[]
   }
   
-  interface SpotifyAPIResponse {
+  interface SpotifySearchDataResponse {
     tracks: {
       href: string;
       items: SpotifyTrack[];

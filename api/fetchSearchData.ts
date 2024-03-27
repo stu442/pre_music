@@ -1,6 +1,6 @@
 import { AccessTokenProps, getAccessToken } from "./getAceessToken"
 
-export const fetchSearchData = async (q:string, type:'artist'|'album'|'track', url?:string) => {
+export const fetchSearchData = async (q:string, type:'artist'|'album'|'track', url?:string | null) => {
   try {
     const API_URL = `https://api.spotify.com/v1/search/?q=${q}&type=${type}`
     let accessToken: AccessTokenProps | null = JSON.parse(localStorage.getItem('spotifyAccessToken') || 'null');

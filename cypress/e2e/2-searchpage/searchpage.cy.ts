@@ -2,7 +2,11 @@ describe("검색 페이지 요소 확인하기", () => {
     beforeEach(() => {
         // given - 검색 페이지 화면에 접근 한다.
         cy.visit("http://localhost:3000/search?keyword=%EC%95%88%EB%85%95");
-        cy.intercept({method:"POST", url: "https://accounts.spotify.com/api/token"},{fixture:"homepage/token.json"})
+        cy.intercept({method:"POST", url: "https://accounts.spotify.com/api/token"},{
+            "access_token": Cypress.env("access_token"),
+            "token_type": "Bearer",
+            "expires_in": 3600
+        })
         cy.intercept({method:"GET", url:"https://api.spotify.com/v1/search/?q=%EC%95%88%EB%85%95&type=track"},{fixture:"searchpage/trackData.json"})
     }
         )

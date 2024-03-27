@@ -1,4 +1,4 @@
-describe("홈페이지 요소 확인하기", () => {
+describe("로그인 테스트", () => {
     beforeEach(() => {
         // given - 홈페이지 화면에 접근 한다.
         cy.visit("http://localhost:3000");
@@ -15,36 +15,17 @@ describe("홈페이지 요소 확인하기", () => {
         cy.intercept({method:"GET", url : "https://api.spotify.com/v1/tracks/?ids=01MoBCPgZHsOPYwMJxc9Qo,1G8ZiodFtDX5tNHwvxcllW,3ZMPl8BrHqX0erYjqWiZ0c,7tr2za8SQg2CI8EDgrdtNl,74g2fPpMSMMH3DinOoTWUB,3UZSpAlc0WZjxkfbUBdUgT,4vLYewWIvqHfKtJDk8c8tq,2oCJgHbwGnYAKXenorXMpW,5DG1ux5rYimpUxMPh2HQcz,6f5c2TrHJxscSjX1CVFlfR"}, {fixture : "homepage/trackData.json"})
         cy.intercept({method:"GET", url : "https://api.spotify.com/v1/tracks/?ids=01MoBCPgZHsOPYwMJxc9Qo,3YDuuc8zxwDHVNCeLHRKms,0JJeoiCAa1hwcBsPxBN2w4,6xGruZOHLs39ZbVccQTuPZ,1G8ZiodFtDX5tNHwvxcllW,6rY5FAWxCdAGllYEOZMbjW,6SB7by6S98iScUgybNS3PI,4Dwsvu6JgyAH78GfdlUxBh,5DG1ux5rYimpUxMPh2HQcz,4X7R14O8tuvGlb0ieHyDYA        "}, {fixture : "homepage/trackData.json"})
     })
-    it("홈페이지 음악 카드 클릭과 오디오 버튼 동작 확인", () => {
-        // when - 특정 음악 카드를 클릭했을 때
-        cy.contains('주인장 추천 음악')
-        cy.contains('회원님들의 픽') 
-        cy.contains('최근 좋아요 받은 음악') 
-        cy.get("[data-cy=music-card-4AFsRbaLKRWo3dDtjDFA2V]").should("be.visible").as("musicCard")
-        cy.intercept({method:"GET", url: "https://yzxeirrpyitzfbkwddhe.supabase.co/rest/v1/LIKES?select=*&contents_id=eq.4AFsRbaLKRWo3dDtjDFA2V"}, [])
-        cy.get("@musicCard").click();
-        // then - 오디오가 없다는 오류가 없다.
-        cy.get("[data-cy=toast_1]").should("not.exist")
-        // then - 사진의 src 속성이 잘 있다.
-        cy.get("[data-cy=music-modal-4AFsRbaLKRWo3dDtjDFA2V]").should("have.attr", "src")
-        cy.get("[data-cy=music-card-4AFsRbaLKRWo3dDtjDFA2V]")
-        cy.get("[data-cy=audio-btn-4AFsRbaLKRWo3dDtjDFA2V]").as('audioBtn')
-        // when - 사진을 클릭 했을 때
-        cy.get("@audioBtn").click({force: true});
-        // then - 음소거 토글이 잘 된다.
-        cy.get("[data-cy=audio-off-4AFsRbaLKRWo3dDtjDFA2V]")
-        cy.get("@audioBtn").click({force: true});
-        cy.get("[data-cy=audio-on-4AFsRbaLKRWo3dDtjDFA2V]")
-        cy.get("@audioBtn").click({force: true});
-        cy.get("[data-cy=audio-off-4AFsRbaLKRWo3dDtjDFA2V]")
-    });
-    it("오디오가 없는 모달을 누르면 오디오가 없다는 오류가 나온다.", () => {
-        // when - 음악 카드를 클릭했을 때
+    it("로그인 없는 상태에서 좋아요를 누르면 오류가 나온다.", () => {
         cy.intercept({method:"GET", url:"https://yzxeirrpyitzfbkwddhe.supabase.co/rest/v1/LIKES?select=*&contents_id=eq.6luBKkFUt5wTwz7hpLhp12"}, [])
         cy.get("[data-cy=music-card-6luBKkFUt5wTwz7hpLhp12]").should("be.visible").as("noAudioCard")
+        // given - 로그인을 안한 상태에서 홈페이지 사진에 접근한다.
         cy.get("@noAudioCard").click();
-        // then - 오디오가 없는 모달을 누르면 오디오가 없다는 오류가 나온다.
-        cy.get("li").contains("음악이 존재하지 않습니다.").should("be.visible").as("toast")
-        cy.get("@toast").invoke("text").should("eq", "음악이 존재하지 않습니다.")
+        // when - 좋아요를 누르면
+        cy.get("[data-cy=likeBtn_6luBKkFUt5wTwz7hpLhp12]").should("be.visible").click()
+        // then - 오류가 보인다.
+        cy.get("li").contains("좋아요를 누르려면 로그인 해주세요.").should("be.visible")
     })
-});
+    it("로그인을 한 상태에서 좋아요를 누르면 정상적으로 요청을 보낸다.", () => {
+        
+    })
+})
